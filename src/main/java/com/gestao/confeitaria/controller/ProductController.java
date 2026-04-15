@@ -1,0 +1,26 @@
+package com.gestao.confeitaria.controller;
+
+import com.gestao.confeitaria.entity.Product;
+import com.gestao.confeitaria.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+
+    @Autowired
+    private ProductService service;
+
+    @PostMapping
+    public Product criar(@RequestBody Product product) {
+        return service.salvar(product);
+    }
+
+    @GetMapping
+    public List<Product> listar() {
+        return service.listar();
+    }
+}
