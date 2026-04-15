@@ -1,5 +1,6 @@
 package com.gestao.confeitaria.controller;
 
+import com.gestao.confeitaria.dto.FichaTecnicaResult;
 import com.gestao.confeitaria.entity.RecipeItem;
 import com.gestao.confeitaria.service.RecipeItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,30 @@ public class RecipeItemController {
     @GetMapping
     public List<RecipeItem> listar() {
         return service.listar();
+    }
+
+    @GetMapping("/product/{id}/custo")
+    public Double calcularCusto(@PathVariable Long id) {
+        return service.calcularCustoPorProduto(id);
+    }
+
+    @GetMapping("/product/{id}/custo-por-porcao")
+    public Double calcularCustoPorPorcao(@PathVariable Long id) {
+        return service.calcularCustoPorRendimento(id);
+    }
+
+    @GetMapping("/product/{id}/preco-total")
+    public Double precoTotal(@PathVariable Long id) {
+        return service.calcularPrecoVendaTotal(id);
+    }
+
+    @GetMapping("/product/{id}/preco-por-porcao")
+    public Double precoPorPorcao(@PathVariable Long id) {
+        return service.calcularPrecoVendaPorPorcao(id);
+    }
+
+    @GetMapping("/product/{id}/ficha-tecnica")
+    public FichaTecnicaResult fichaTecnica(@PathVariable Long id) {
+        return service.calcularFichaTecnica(id);
     }
 }

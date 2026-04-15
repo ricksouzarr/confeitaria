@@ -33,4 +33,8 @@ public class ProductService {
     public List<Product> listar() {
         return produtos;
     }
+
+    public Double calcularCustoPorRendimento(Product product, Double custoTotal) {
+        return custoTotal / product.getRendimento();
+    }
 }

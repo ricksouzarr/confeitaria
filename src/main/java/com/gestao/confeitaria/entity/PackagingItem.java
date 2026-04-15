@@ -6,19 +6,16 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecipeItem {
+public class PackagingItem {
 
     private Long id;
 
     private Product product;
+    private Packaging packaging;
 
-    private Ingredient ingredient;
-
-    // quantidade usada na receita (ex: 0.2 kg)
     private Double quantidade;
 
-    // Custo unitario total usado
     public Double getCustoTotal() {
-        return quantidade * ingredient.getCustoUnitario();
+        return quantidade * packaging.getCustoUnitario();
     }
 }

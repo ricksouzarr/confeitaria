@@ -6,21 +6,16 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ingredient {
+public class Packaging {
 
     private Long id;
     private String nome;
 
-    // preço do pacote fechado (ex: 10 reais)
     private Double precoPacote;
-
-    // quantidade do pacote (ex: 1kg, 500g, etc)
     private Double quantidadePacote;
 
-    // ligação com Unit
     private Unit unidade;
 
-    // Custo unitario
     public Double getCustoUnitario() {
         return precoPacote / quantidadePacote;
     }

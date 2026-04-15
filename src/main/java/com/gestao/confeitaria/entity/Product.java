@@ -18,4 +18,7 @@ public class Product {
     //Multiplicador de preço (ex.: 1.5)
     private Double markup;
 
+    // Quanto tempo demora para fabricação do produto em horas;
+    private Double horasMaoDeObra;
+
 }
