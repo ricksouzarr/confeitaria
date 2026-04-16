@@ -1,7 +1,13 @@
 package com.gestao.confeitaria.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
+import java.math.BigDecimal;
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -9,6 +15,8 @@ import lombok.*;
 
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
@@ -16,9 +24,12 @@ public class Product {
     private Integer rendimento;
 
     //Multiplicador de preço (ex.: 1.5)
-    private Double markup;
+    //private Double markup;
+
+    private BigDecimal markupTotal;
+    private BigDecimal markupRendimento;
 
     // Quanto tempo demora para fabricação do produto em horas;
-    private Double horasMaoDeObra;
+    private BigDecimal horasMaoDeObra;
 
 }

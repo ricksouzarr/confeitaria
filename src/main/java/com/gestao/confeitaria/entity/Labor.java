@@ -2,6 +2,8 @@ package com.gestao.confeitaria.entity;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,5 +13,5 @@ public class Labor {
     private Long id;
 
     // custo por hora
-    private Double custoHora;
+    private BigDecimal custoHora;
 }

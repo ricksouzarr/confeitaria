@@ -2,6 +2,8 @@ package com.gestao.confeitaria.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -9,13 +11,13 @@ import lombok.*;
 @Builder
 public class FichaTecnicaResult {
 
-    private Double custoTotal;
-    private Double custoPorPorcao;
-    private Double precoTotal;
-    private Double precoPorPorcao;
+    private BigDecimal custoTotal;
+    private BigDecimal custoPorPorcao;
+    private BigDecimal precoTotal;
+    private BigDecimal precoPorPorcao;
 
-    private Double custoIngredientes;
-    private Double custoEmbalagem;
-    private Double custoMaoDeObra;
+    private BigDecimal custoIngredientes;
+    private BigDecimal custoEmbalagem;
+    private BigDecimal custoMaoDeObra;
 
 }

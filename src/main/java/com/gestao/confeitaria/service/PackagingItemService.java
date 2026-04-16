@@ -6,6 +6,7 @@ import com.gestao.confeitaria.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,12 @@ public class PackagingItemService {
         return itens;
     }
 
-    public Double calcularCustoPorProduto(Long productId) {
+    public BigDecimal calcularCustoPorProduto(Long productId) {
 
         return itens.stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
-                .mapToDouble(PackagingItem::getCustoTotal)
-                .sum();
+                .map(PackagingItem::getCustoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 

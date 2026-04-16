@@ -5,8 +5,12 @@ import com.gestao.confeitaria.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.gestao.confeitaria.util.MoneyUtils.scale;
 
 @Service
 public class RecipeItemService {
@@ -47,83 +51,85 @@ public class RecipeItemService {
         return itens;
     }
 
-    public Double calcularCustoPorProduto(Long productId) {
-
-        Double custoIngredientes = itens.stream()
+    private BigDecimal calcularCustoIngredientes(Long productId) {
+        return itens.stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
-                .mapToDouble(RecipeItem::getCustoTotal)
-                .sum();
+                .map(RecipeItem::getCustoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
-        Double custoEmbalagem = packagingItemService.calcularCustoPorProduto(productId);
+    private BigDecimal calcularCustoEmbalagem(Long productId) {
+        return packagingItemService.calcularCustoPorProduto(productId);
+    }
 
+    private BigDecimal calcularCustoMaoDeObra(Long productId) {
         Product product = productService.buscarPorId(productId);
-
         Labor labor = laborService.obter();
 
-        Double custoMaoDeObra = product.getHorasMaoDeObra() * labor.getCustoHora();
-
-        Double custoTotal = custoIngredientes + custoEmbalagem + custoMaoDeObra;
-
-        return custoTotal;
+        return product.getHorasMaoDeObra().multiply(labor.getCustoHora());
     }
 
-    public Double calcularCustoPorRendimento(Long productId) {
+    public BigDecimal calcularCustoPorProduto(Long productId) {
+
+        BigDecimal ingredientes = calcularCustoIngredientes(productId);
+        BigDecimal embalagem = calcularCustoEmbalagem(productId);
+        BigDecimal maoDeObra = calcularCustoMaoDeObra(productId);
+
+        return ingredientes.add(embalagem).add(maoDeObra);
+    }
+
+    public BigDecimal calcularCustoPorRendimento(Long productId) {
 
         Product product = productService.buscarPorId(productId);
 
-        Double custoTotal = calcularCustoPorProduto(productId);
+        BigDecimal custoTotal = calcularCustoPorProduto(productId);
 
-        return custoTotal / product.getRendimento();
+        return custoTotal.divide(BigDecimal.valueOf(product.getRendimento()), 4, RoundingMode.HALF_UP);
     }
 
-    public Double calcularPrecoVendaTotal(Long productId) {
+    public BigDecimal calcularPrecoVendaTotal(Long productId) {
 
         Product product = productService.buscarPorId(productId);
 
-        Double custoTotal = calcularCustoPorProduto(productId);
+        BigDecimal custoTotal = calcularCustoPorProduto(productId);
 
-        return custoTotal * product.getMarkup();
+        return custoTotal.multiply(product.getMarkupTotal());
     }
 
-    public Double calcularPrecoVendaPorPorcao(Long productId) {
+    public BigDecimal calcularPrecoVendaPorPorcao(Long productId) {
 
         Product product = productService.buscarPorId(productId);
 
-        Double custoPorPorcao = calcularCustoPorRendimento(productId);
+        BigDecimal custoPorPorcao = calcularCustoPorRendimento(productId);
 
-        return custoPorPorcao * product.getMarkup();
+        return custoPorPorcao.multiply(product.getMarkupRendimento());
     }
 
     public FichaTecnicaResult calcularFichaTecnica(Long productId) {
 
-        Double custoIngredientes = itens.stream()
-                .filter(i -> i.getProduct().getId().equals(productId))
-                .mapToDouble(RecipeItem::getCustoTotal)
-                .sum();
+        BigDecimal custoIngredientes = calcularCustoIngredientes(productId);
+        BigDecimal custoEmbalagem = calcularCustoEmbalagem(productId);
+        BigDecimal custoMaoDeObra = calcularCustoMaoDeObra(productId);
 
-        Double custoEmbalagem = packagingItemService.calcularCustoPorProduto(productId);
+        BigDecimal custoTotal = custoIngredientes.add(custoEmbalagem).add(custoMaoDeObra);
 
         Product product = productService.buscarPorId(productId);
-        Labor labor = laborService.obter();
 
-        Double custoMaoDeObra = product.getHorasMaoDeObra() * labor.getCustoHora();
+        BigDecimal custoPorPorcao =
+                productService.calcularCustoPorRendimento(product, custoTotal);
 
-        Double custoTotal = custoIngredientes + custoEmbalagem + custoMaoDeObra;
+        BigDecimal precoTotal = custoTotal.multiply(product.getMarkupTotal());
 
-        Double custoPorPorcao = custoTotal / product.getRendimento();
-
-        Double precoTotal = custoTotal * product.getMarkup();
-
-        Double precoPorPorcao = custoPorPorcao * product.getMarkup();
+        BigDecimal precoPorPorcao = custoPorPorcao.multiply(product.getMarkupRendimento());
 
         return FichaTecnicaResult.builder()
-                .custoIngredientes(custoIngredientes)
-                .custoEmbalagem(custoEmbalagem)
-                .custoMaoDeObra(custoMaoDeObra)
-                .custoTotal(custoTotal)
-                .custoPorPorcao(custoPorPorcao)
-                .precoTotal(precoTotal)
-                .precoPorPorcao(precoPorPorcao)
+                .custoIngredientes(scale(custoIngredientes))
+                .custoEmbalagem(scale(custoEmbalagem))
+                .custoMaoDeObra(scale(custoMaoDeObra))
+                .custoTotal(scale(custoTotal))
+                .custoPorPorcao(scale(custoPorPorcao))
+                .precoTotal(scale(precoTotal))
+                .precoPorPorcao(scale(precoPorPorcao))
                 .build();
     }
 }

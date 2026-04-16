@@ -2,6 +2,8 @@ package com.gestao.confeitaria.entity;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,10 +17,10 @@ public class RecipeItem {
     private Ingredient ingredient;
 
     // quantidade usada na receita (ex: 0.2 kg)
-    private Double quantidade;
+    private BigDecimal quantidade;
 
     // Custo unitario total usado
-    public Double getCustoTotal() {
-        return quantidade * ingredient.getCustoUnitario();
+    public BigDecimal getCustoTotal() {
+        return quantidade.multiply(ingredient.getCustoUnitario());
     }
 }

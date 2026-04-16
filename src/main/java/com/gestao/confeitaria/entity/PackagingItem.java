@@ -2,6 +2,8 @@ package com.gestao.confeitaria.entity;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,9 +15,9 @@ public class PackagingItem {
     private Product product;
     private Packaging packaging;
 
-    private Double quantidade;
+    private BigDecimal quantidade;
 
-    public Double getCustoTotal() {
-        return quantidade * packaging.getCustoUnitario();
+    public BigDecimal getCustoTotal() {
+        return quantidade.multiply(packaging.getCustoUnitario());
     }
 }

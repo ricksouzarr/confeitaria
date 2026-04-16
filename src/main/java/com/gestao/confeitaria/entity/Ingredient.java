@@ -2,6 +2,8 @@ package com.gestao.confeitaria.entity;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,16 +14,16 @@ public class Ingredient {
     private String nome;
 
     // preço do pacote fechado (ex: 10 reais)
-    private Double precoPacote;
+    private BigDecimal precoPacote;
 
     // quantidade do pacote (ex: 1kg, 500g, etc)
-    private Double quantidadePacote;
+    private BigDecimal quantidadePacote;
 
     // ligação com Unit
     private Unit unidade;
 
     // Custo unitario
-    public Double getCustoUnitario() {
-        return precoPacote / quantidadePacote;
+    public BigDecimal getCustoUnitario() {
+        return precoPacote.divide(quantidadePacote);
     }
 }

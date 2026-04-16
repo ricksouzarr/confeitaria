@@ -1,40 +1,38 @@
 package com.gestao.confeitaria.service;
 
 import com.gestao.confeitaria.entity.Product;
+import com.gestao.confeitaria.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
 public class ProductService {
 
-    private List<Product> produtos = new ArrayList<>();
-    private Long contador = 1L;
+    @Autowired
+    private ProductRepository repository;
 
-    public Product buscarPorId(Long id) {
-        return produtos.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Product não encontrado"
-                ));
+    public Product buscarPorId(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
     }
 
     public Product salvar(Product product){
-        product.setId(contador++);
-        produtos.add(product);
-        return product;
+        return repository.save(product);
     }
 
-    public List<Product> listar() {
-        return produtos;
+    public List<Product> listar(){
+        return repository.findAll();
     }
 
-    public Double calcularCustoPorRendimento(Product product, Double custoTotal) {
-        return custoTotal / product.getRendimento();
+    public BigDecimal calcularCustoPorRendimento(Product product, BigDecimal custoTotal) {
+        return custoTotal.divide(BigDecimal.valueOf(product.getRendimento()),
+        4,
+                RoundingMode.HALF_UP);
     }
 }

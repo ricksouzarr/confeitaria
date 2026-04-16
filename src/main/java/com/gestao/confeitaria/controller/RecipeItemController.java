@@ -6,6 +6,7 @@ import com.gestao.confeitaria.service.RecipeItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -26,22 +27,22 @@ public class RecipeItemController {
     }
 
     @GetMapping("/product/{id}/custo")
-    public Double calcularCusto(@PathVariable Long id) {
+    public BigDecimal calcularCusto(@PathVariable Long id) {
         return service.calcularCustoPorProduto(id);
     }
 
     @GetMapping("/product/{id}/custo-por-porcao")
-    public Double calcularCustoPorPorcao(@PathVariable Long id) {
+    public BigDecimal calcularCustoPorPorcao(@PathVariable Long id) {
         return service.calcularCustoPorRendimento(id);
     }
 
     @GetMapping("/product/{id}/preco-total")
-    public Double precoTotal(@PathVariable Long id) {
+    public BigDecimal precoTotal(@PathVariable Long id) {
         return service.calcularPrecoVendaTotal(id);
     }
 
     @GetMapping("/product/{id}/preco-por-porcao")
-    public Double precoPorPorcao(@PathVariable Long id) {
+    public BigDecimal precoPorPorcao(@PathVariable Long id) {
         return service.calcularPrecoVendaPorPorcao(id);
     }
 
