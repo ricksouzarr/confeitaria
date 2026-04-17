@@ -2,6 +2,8 @@ package com.gestao.confeitaria.service;
 
 import com.gestao.confeitaria.entity.Ingredient;
 import com.gestao.confeitaria.entity.Unit;
+import com.gestao.confeitaria.repository.IngredientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,18 +15,15 @@ import java.util.List;
 
 public class IngredientService {
 
-    private final UnitService unitService;
-    private List<Ingredient> ingredientes = new ArrayList<>();
-    private Long contador = 1l;
+    @Autowired
+    private IngredientRepository repository;
 
-    public Ingredient buscarPorId(Long id) {
-        return ingredientes.stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Ingredient não encontrado"
-                ));
+    @Autowired
+    private UnitService unitService;
+
+    public Ingredient buscarPorId(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingrediente não encontrado"));
     }
 
     public IngredientService(UnitService unitService) {
@@ -33,21 +32,13 @@ public class IngredientService {
 
     public Ingredient salvar(Ingredient ingredient){
 
-        // pega o id enviado
-        Long unitId = ingredient.getUnidade().getId();
+        Unit unidade = unitService.buscarPorId(ingredient.getUnidade().getId());
 
-        //busca unidade real
-        Unit unidadeCompleta = unitService.buscarPorId(unitId);
+        ingredient.setUnidade(unidade);
 
-        //seta a unidade correta
-        ingredient.setUnidade(unidadeCompleta);
-
-        ingredient.setId(contador++);
-        ingredientes.add(ingredient);
-
-        return ingredient;
+        return repository.save(ingredient);
     }
     public List<Ingredient> listar(){
-        return ingredientes;
+        return repository.findAll();
     }
 }

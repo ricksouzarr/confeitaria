@@ -1,6 +1,8 @@
 package com.gestao.confeitaria.service;
 
 import com.gestao.confeitaria.entity.Unit;
+import com.gestao.confeitaria.repository.UnitRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,27 +13,17 @@ import java.util.List;
 @Service
 public class UnitService {
 
+    @Autowired
+    private UnitRepository repository;
 
-    private List<Unit> unidades = new ArrayList<>();
-    private Long contador = 1L;
-
-    public Unit buscarPorId(Long id) {
-        return unidades.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Unit não encontrada"
-                ));
+    public Unit buscarPorId(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidade não encontrada"));
     }
-
-    public Unit salvar(Unit unit) {
-        unit.setId(contador++);
-        unidades.add(unit);
-        return unit;
+    public Unit salvar(Unit unit){
+        return repository.save(unit);
     }
-
-    public List<Unit> listar() {
-        return unidades;
+    public List<Unit> listar(){
+        return repository.findAll();
     }
 }

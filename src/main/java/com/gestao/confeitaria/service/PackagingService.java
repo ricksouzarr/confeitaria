@@ -2,6 +2,7 @@ package com.gestao.confeitaria.service;
 
 import com.gestao.confeitaria.entity.Packaging;
 import com.gestao.confeitaria.entity.Unit;
+import com.gestao.confeitaria.repository.PackagingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,34 +14,27 @@ import java.util.List;
 @Service
 public class PackagingService {
 
-    private List<Packaging> embalagens = new ArrayList<>();
-    private Long contador = 1L;
+    @Autowired
+    private PackagingRepository repository;
 
     @Autowired
     private UnitService unitService;
 
-    public Packaging salvar(Packaging embalagem) {
+    public Packaging salvar(Packaging embalagem){
 
         Unit unidade = unitService.buscarPorId(embalagem.getUnidade().getId());
+
         embalagem.setUnidade(unidade);
 
-        embalagem.setId(contador++);
-        embalagens.add(embalagem);
-
-        return embalagem;
+        return repository.save(embalagem);
     }
 
     public List<Packaging> listar() {
-        return embalagens;
+        return repository.findAll();
     }
 
-    public Packaging buscarPorId(Long id) {
-        return embalagens.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Packaging não encontrada"
-                ));
+    public Packaging buscarPorId(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Packaging não encontrada"));
     }
 }

@@ -2,6 +2,7 @@ package com.gestao.confeitaria.controller;
 
 import com.gestao.confeitaria.entity.Product;
 import com.gestao.confeitaria.service.ProductService;
+import jakarta.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class ProductController {
     private ProductService service;
 
     @PostMapping
-    public Product criar(@RequestBody Product product) {
+    public Product criar(@RequestBody @Valid Product product) {
         return service.salvar(product);
     }
 
