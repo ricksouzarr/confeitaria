@@ -35,4 +35,11 @@ public class ProductService {
         4,
                 RoundingMode.HALF_UP);
     }
+
+    public void delete(Long id) {
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        repository.delete(product);
+    }
 }
