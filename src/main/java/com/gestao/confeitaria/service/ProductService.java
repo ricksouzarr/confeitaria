@@ -42,4 +42,16 @@ public class ProductService {
 
         repository.delete(product);
     }
+
+    public Product alterar(Long id, Product productAtualizado) {
+        Product existente = buscarPorId(id);
+
+        existente.setNome(productAtualizado.getNome());
+        existente.setRendimento(productAtualizado.getRendimento());
+        existente.setMarkupTotal(productAtualizado.getMarkupTotal());
+        existente.setMarkupRendimento(productAtualizado.getMarkupRendimento());
+        existente.setHorasMaoDeObra(productAtualizado.getHorasMaoDeObra());
+
+        return repository.save(existente);
+    }
 }

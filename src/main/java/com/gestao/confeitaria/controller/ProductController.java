@@ -31,4 +31,17 @@ public class ProductController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(
+            @PathVariable Long id,
+            @RequestBody @Valid Product request
+    ) {
+        return ResponseEntity.ok(service.alterar(id, request));
+    }
 }
