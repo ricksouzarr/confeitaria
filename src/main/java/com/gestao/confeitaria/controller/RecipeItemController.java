@@ -4,7 +4,9 @@ import com.gestao.confeitaria.dto.FichaTecnicaResult;
 import com.gestao.confeitaria.entity.RecipeItem;
 import com.gestao.confeitaria.service.RecipeItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,5 +51,11 @@ public class RecipeItemController {
     @GetMapping("/product/{id}/ficha-tecnica")
     public FichaTecnicaResult fichaTecnica(@PathVariable Long id) {
         return service.calcularFichaTecnica(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

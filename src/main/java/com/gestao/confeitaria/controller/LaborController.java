@@ -4,6 +4,8 @@ import com.gestao.confeitaria.entity.Labor;
 import com.gestao.confeitaria.service.LaborService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping("/labor")

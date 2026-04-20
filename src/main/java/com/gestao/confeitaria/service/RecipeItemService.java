@@ -46,6 +46,14 @@ public class RecipeItemService {
         return repository.findAll();
     }
 
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Item da receita não encontrado.");
+        }
+
+        repository.deleteById(id);
+    }
+
     private BigDecimal calcularCustoIngredientes(Long productId) {
         return repository.findByProductId(productId).stream()
                 .filter(i -> i.getProduct().getId().equals(productId))

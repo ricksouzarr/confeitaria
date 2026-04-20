@@ -38,6 +38,13 @@ public class PackagingItemService {
         return repository.findAll();
     }
 
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Item da receita não encontrado.");
+        }
+        repository.deleteById(id);
+    }
+
     public BigDecimal calcularCustoPorProduto(Long productId) {
 
         return repository.findByProductId(productId).stream()

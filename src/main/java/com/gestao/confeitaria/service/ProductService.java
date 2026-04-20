@@ -11,6 +11,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+
+// CRIAR CATEGORIA DE PRODUTOS E INSERIR POSSIBILIDADE DE MAO DE OBRA POR CATEGORIA //
+
 @Service
 public class ProductService {
 
