@@ -1,5 +1,6 @@
 package com.gestao.confeitaria.service;
 
+import com.gestao.confeitaria.entity.Product;
 import com.gestao.confeitaria.entity.Unit;
 import com.gestao.confeitaria.repository.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,20 @@ public class UnitService {
     }
     public List<Unit> listar(){
         return repository.findAll();
+    }
+    public void delete(Long id){
+        Unit unit = repository.findById(id).orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
+
+        repository.delete(unit);
+    }
+
+    public Unit update(Long id, Unit unitAtualizado) {
+        Unit existente = buscarPorId(id);
+
+        existente.setNome(unitAtualizado.getNome());
+        existente.setTipo(unitAtualizado.getTipo());
+        existente.setSigla(unitAtualizado.getSigla());
+
+        return repository.save(existente);
     }
 }
