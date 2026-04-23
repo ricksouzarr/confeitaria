@@ -2,9 +2,11 @@ package com.gestao.confeitaria.controller;
 
 import com.gestao.confeitaria.dto.FichaTecnicaResult;
 import com.gestao.confeitaria.entity.RecipeItem;
+import com.gestao.confeitaria.entity.Unit;
 import com.gestao.confeitaria.service.RecipeItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -57,5 +59,10 @@ public class RecipeItemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RecipeItem> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 }

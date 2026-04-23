@@ -3,9 +3,12 @@ package com.gestao.confeitaria.service;
 import com.gestao.confeitaria.entity.Packaging;
 import com.gestao.confeitaria.entity.PackagingItem;
 import com.gestao.confeitaria.entity.Product;
+import com.gestao.confeitaria.entity.RecipeItem;
 import com.gestao.confeitaria.repository.PackagingItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ public class PackagingItemService {
     public PackagingItem salvar(PackagingItem item){
 
         Product product = productService.buscarPorId(item.getProduct().getId());
-        Packaging packaging = packagingService.buscarPorId(item.getPackaging().getId());
+        Packaging packaging = packagingService.findById(item.getPackaging().getId());
 
         item.setProduct(product);
         item.setPackaging(packaging);
@@ -50,6 +53,12 @@ public class PackagingItemService {
         return repository.findByProductId(productId).stream()
                 .map(PackagingItem::getCustoTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+
+    public PackagingItem findById(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Embalagem não encontrada"));
     }
 
 

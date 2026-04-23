@@ -4,7 +4,9 @@ import com.gestao.confeitaria.dto.FichaTecnicaResult;
 import com.gestao.confeitaria.entity.*;
 import com.gestao.confeitaria.repository.RecipeItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -52,6 +54,11 @@ public class RecipeItemService {
         }
 
         repository.deleteById(id);
+    }
+
+    public RecipeItem findById(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingrediente não encontrado"));
     }
 
     private BigDecimal calcularCustoIngredientes(Long productId) {

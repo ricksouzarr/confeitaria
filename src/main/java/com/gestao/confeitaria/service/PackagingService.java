@@ -33,8 +33,15 @@ public class PackagingService {
         return repository.findAll();
     }
 
-    public Packaging buscarPorId(Long id){
+    public Packaging findById(Long id){
         return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Packaging não encontrada"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Embalagem não encontrada"));
+    }
+
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Embalagem não encontrada.");
+        }
+        repository.deleteById(id);
     }
 }
