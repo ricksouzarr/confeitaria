@@ -41,4 +41,8 @@ public class UnitController {
     ) {
         return ResponseEntity.ok(service.update(id, request));
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Unit> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
 }
