@@ -1,5 +1,6 @@
 package com.gestao.confeitaria.entity;
 
+import com.gestao.confeitaria.util.BigDecimalUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +36,8 @@ public class Packaging {
     private Unit unidade;
 
     public BigDecimal getCustoUnitario() {
-        return precoPacote.divide(quantidadePacote, 4, RoundingMode.HALF_UP);
+        return BigDecimalUtils.scale(
+                BigDecimalUtils.divide(precoPacote, quantidadePacote)
+        );
     }
 }

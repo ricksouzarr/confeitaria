@@ -2,6 +2,7 @@ package com.gestao.confeitaria.service;
 
 import com.gestao.confeitaria.entity.Product;
 import com.gestao.confeitaria.repository.ProductRepository;
+import com.gestao.confeitaria.util.BigDecimalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,9 +35,7 @@ public class ProductService {
     }
 
     public BigDecimal calcularCustoPorRendimento(Product product, BigDecimal custoTotal) {
-        return custoTotal.divide(BigDecimal.valueOf(product.getRendimento()),
-        4,
-                RoundingMode.HALF_UP);
+        return BigDecimalUtils.scale(BigDecimalUtils.divide(custoTotal, BigDecimal.valueOf(product.getRendimento())));
     }
 
     public void delete(Long id) {

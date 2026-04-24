@@ -1,5 +1,6 @@
 package com.gestao.confeitaria.entity;
 
+import com.gestao.confeitaria.util.BigDecimalUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -38,6 +39,8 @@ public class Ingredient {
 
     // Custo unitario
     public BigDecimal getCustoUnitario() {
-        return precoPacote.divide(quantidadePacote, 4, RoundingMode.HALF_UP);
+        return BigDecimalUtils.scale(
+                BigDecimalUtils.divide(precoPacote, quantidadePacote)
+        );
     }
 }
