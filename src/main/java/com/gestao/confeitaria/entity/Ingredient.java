@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Getter
 @Setter
@@ -37,6 +38,6 @@ public class Ingredient {
 
     // Custo unitario
     public BigDecimal getCustoUnitario() {
-        return precoPacote.divide(quantidadePacote);
+        return precoPacote.divide(quantidadePacote, 4, RoundingMode.HALF_UP);
     }
 }
