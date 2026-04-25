@@ -1,9 +1,6 @@
 package com.gestao.confeitaria.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import jakarta.validation.constraints.*;
 
@@ -41,5 +38,8 @@ public class Product {
     @NotNull
     @DecimalMin("0.0")
     private BigDecimal horasMaoDeObra;
+
+    @Column(columnDefinition = "TEXT")
+    private String observacaoFichaTecnica;
 
 }

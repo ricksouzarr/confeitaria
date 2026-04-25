@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 
@@ -53,6 +52,7 @@ public class ProductService {
         existente.setMarkupTotal(productAtualizado.getMarkupTotal());
         existente.setMarkupRendimento(productAtualizado.getMarkupRendimento());
         existente.setHorasMaoDeObra(productAtualizado.getHorasMaoDeObra());
+        existente.setObservacaoFichaTecnica(productAtualizado.getObservacaoFichaTecnica());
 
         return repository.save(existente);
     }
