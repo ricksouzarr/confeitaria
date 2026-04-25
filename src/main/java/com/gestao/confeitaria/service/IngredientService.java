@@ -26,10 +26,6 @@ public class IngredientService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingrediente não encontrado"));
     }
 
-    public IngredientService(UnitService unitService) {
-        this.unitService = unitService;
-    }
-
     public Ingredient salvar(Ingredient ingredient){
 
         Unit unidade = unitService.buscarPorId(ingredient.getUnidade().getId());
@@ -40,5 +36,26 @@ public class IngredientService {
     }
     public List<Ingredient> listar(){
         return repository.findAll();
+    }
+
+    public void delete(Long id) {
+        Ingredient ingredient = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Ingrediente não encontrado"));
+        repository.delete(ingredient);
+    }
+
+    public Ingredient alterar(Long id, Ingredient ingredientAtualizado) {
+        Ingredient existente = buscarPorId(id);
+
+        existente.setNome(ingredientAtualizado.getNome());
+        existente.setPrecoPacote(ingredientAtualizado.getPrecoPacote());
+        existente.setQuantidadePacote(ingredientAtualizado.getQuantidadePacote());
+
+        Unit unidade = unitService.buscarPorId(
+                ingredientAtualizado.getUnidade().getId());
+        existente.setUnidade(unidade);
+
+        return repository.save(existente);
     }
 }
