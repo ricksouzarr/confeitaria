@@ -11,14 +11,21 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.util.List;
 
-
-// CRIAR CATEGORIA DE PRODUTOS E INSERIR POSSIBILIDADE DE MAO DE OBRA POR CATEGORIA //
-
 @Service
 public class ProductService {
 
     @Autowired
     private ProductRepository repository;
+
+    @Autowired
+    private ProductCategoryService categoryService;
+
+    @Autowired
+    private ProductTypeService typeService;
+
+    @Autowired
+    private ProductOccasionService occasionService;
+
 
     public Product buscarPorId(Long id){
         return repository.findById(id)
@@ -52,7 +59,37 @@ public class ProductService {
         existente.setMarkupTotal(productAtualizado.getMarkupTotal());
         existente.setMarkupRendimento(productAtualizado.getMarkupRendimento());
         existente.setHorasMaoDeObra(productAtualizado.getHorasMaoDeObra());
-        existente.setObservacaoFichaTecnica(productAtualizado.getObservacaoFichaTecnica());
+        existente.setObservacaoFichaTecnica(
+                productAtualizado.getObservacaoFichaTecnica());
+        existente.setKit(productAtualizado.isKit());
+
+        // categoria, tipo e ocasião são opcionais
+        if (productAtualizado.getCategoria() != null
+                && productAtualizado.getCategoria().getId() != null) {
+            existente.setCategoria(
+                    categoryService.buscarPorId(
+                            productAtualizado.getCategoria().getId()));
+        } else {
+            existente.setCategoria(null);
+        }
+
+        if (productAtualizado.getTipo() != null
+                && productAtualizado.getTipo().getId() != null) {
+            existente.setTipo(
+                    typeService.buscarPorId(
+                            productAtualizado.getTipo().getId()));
+        } else {
+            existente.setTipo(null);
+        }
+
+        if (productAtualizado.getOcasiao() != null
+                && productAtualizado.getOcasiao().getId() != null) {
+            existente.setOcasiao(
+                    occasionService.buscarPorId(
+                            productAtualizado.getOcasiao().getId()));
+        } else {
+            existente.setOcasiao(null);
+        }
 
         return repository.save(existente);
     }

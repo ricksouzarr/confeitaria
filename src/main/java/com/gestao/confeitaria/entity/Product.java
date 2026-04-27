@@ -42,4 +42,16 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String observacaoFichaTecnica;
 
+    // não cadastrável, apenas boolean
+    private boolean kit = false;
+
+    @ManyToOne
+    private ProductCategory categoria;
+
+    @ManyToOne
+    private ProductType tipo;
+
+    @ManyToOne
+    private ProductOccasion ocasiao;
+
 }
