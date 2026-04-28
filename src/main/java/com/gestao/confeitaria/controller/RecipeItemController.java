@@ -2,7 +2,6 @@ package com.gestao.confeitaria.controller;
 
 import com.gestao.confeitaria.dto.FichaTecnicaResult;
 import com.gestao.confeitaria.entity.RecipeItem;
-import com.gestao.confeitaria.entity.Unit;
 import com.gestao.confeitaria.service.RecipeItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
