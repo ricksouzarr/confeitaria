@@ -43,6 +43,7 @@ public class Product {
     private String observacaoFichaTecnica;
 
     // não cadastrável, apenas boolean
+    @Column(nullable = false)
     private boolean kit = false;
 
     @ManyToOne

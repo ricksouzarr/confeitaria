@@ -17,7 +17,7 @@ public class CorsConfig {
                         .allowedOrigins(
                                 "http://localhost:5173",
                                 "http://localhost:5174",
-                                "https://seu-front.onrender.com"
+                                "https://confeitaria-front-rub9.onrender.com"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
