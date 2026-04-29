@@ -4,6 +4,7 @@ import com.gestao.confeitaria.entity.KitItem;
 import com.gestao.confeitaria.entity.Product;
 import com.gestao.confeitaria.repository.KitItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,6 +22,7 @@ public class KitItemService {
     private ProductService productService;
 
     @Autowired
+    @Lazy
     private RecipeItemService recipeItemService;
 
     public KitItem salvar(KitItem item) {
