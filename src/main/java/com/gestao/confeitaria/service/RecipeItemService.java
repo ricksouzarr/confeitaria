@@ -32,6 +32,9 @@ public class RecipeItemService {
     @Autowired
     private LaborService laborService;
 
+    @Autowired
+    private KitItemService kitItemService;
+
     public RecipeItem salvar(RecipeItem item){
 
         Product product = productService.buscarPorId(item.getProduct().getId());
@@ -119,8 +122,12 @@ public class RecipeItemService {
         BigDecimal custoIngredientes = calcularCustoIngredientes(productId);
         BigDecimal custoEmbalagem = calcularCustoEmbalagem(productId);
         BigDecimal custoMaoDeObra = calcularCustoMaoDeObra(productId);
+        BigDecimal custoKit = kitItemService.calcularCustoPorKit(productId);
 
-        BigDecimal custoTotal = custoIngredientes.add(custoEmbalagem).add(custoMaoDeObra);
+        BigDecimal custoTotal = custoIngredientes
+                .add(custoEmbalagem)
+                .add(custoMaoDeObra)
+                .add(custoKit);
 
         Product product = productService.buscarPorId(productId);
 

@@ -20,4 +20,6 @@ public class FichaTecnicaResult {
     private BigDecimal custoEmbalagem;
     private BigDecimal custoMaoDeObra;
 
+    private BigDecimal custoProdutosFilhos;
+
 }
