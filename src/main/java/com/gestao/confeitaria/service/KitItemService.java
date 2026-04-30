@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static com.gestao.confeitaria.util.MoneyUtils.scale;
@@ -54,31 +55,29 @@ public class KitItemService {
     public BigDecimal calcularCustoPorKit(Long kitId) {
         return repository.findByKitId(kitId).stream()
                 .map(item -> {
-                    // custo total do filho × quantidade usada
-                    BigDecimal custoFilho = recipeItemService
+                    BigDecimal custoFichaProduto = recipeItemService
                             .calcularFichaTecnica(item.getProduto().getId())
                             .getCustoTotal();
-                    return item.getQuantidade().multiply(custoFilho);
+
+                    BigDecimal rendimento = BigDecimal.valueOf(item.getProduto().getRendimento());
+
+                    BigDecimal custoUnitario = custoFichaProduto.divide(rendimento, 2, RoundingMode.HALF_UP);
+
+                    return item.getQuantidade().multiply(custoUnitario);
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    public List<KitItem> listarPorKit(Long kitId) {
-        return repository.findByKitId(kitId);
-    }
-
-    public void delete(Long id) {
-        if (!repository.existsById(id))
-            throw new RuntimeException("Item não encontrado");
-        repository.deleteById(id);
     }
 
     public List<KitItemResponse> listarPorKitComCustos(Long kitId) {
         return repository.findByKitId(kitId).stream()
                 .map(item -> {
-                    BigDecimal custoProduto = recipeItemService
+                    BigDecimal custoFichaProduto = recipeItemService
                             .calcularFichaTecnica(item.getProduto().getId())
                             .getCustoTotal();
+
+                    BigDecimal rendimento = BigDecimal.valueOf(item.getProduto().getRendimento());
+
+                    BigDecimal custoProduto = custoFichaProduto.divide(rendimento, 2, RoundingMode.HALF_UP);
 
                     BigDecimal custoTotal = custoProduto.multiply(item.getQuantidade());
 
@@ -91,5 +90,16 @@ public class KitItemService {
                             .build();
                 })
                 .toList();
+    }
+
+
+    public List<KitItem> listarPorKit(Long kitId) {
+        return repository.findByKitId(kitId);
+    }
+
+    public void delete(Long id) {
+        if (!repository.existsById(id))
+            throw new RuntimeException("Item não encontrado");
+        repository.deleteById(id);
     }
 }
