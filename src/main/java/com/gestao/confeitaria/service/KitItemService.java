@@ -1,5 +1,6 @@
 package com.gestao.confeitaria.service;
 
+import com.gestao.confeitaria.dto.KitItemResponse;
 import com.gestao.confeitaria.entity.KitItem;
 import com.gestao.confeitaria.entity.Product;
 import com.gestao.confeitaria.repository.KitItemRepository;
@@ -11,6 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.gestao.confeitaria.util.MoneyUtils.scale;
+
 
 @Service
 public class KitItemService {
@@ -67,5 +71,25 @@ public class KitItemService {
         if (!repository.existsById(id))
             throw new RuntimeException("Item não encontrado");
         repository.deleteById(id);
+    }
+
+    public List<KitItemResponse> listarPorKitComCustos(Long kitId) {
+        return repository.findByKitId(kitId).stream()
+                .map(item -> {
+                    BigDecimal custoProduto = recipeItemService
+                            .calcularFichaTecnica(item.getProduto().getId())
+                            .getCustoTotal();
+
+                    BigDecimal custoTotal = custoProduto.multiply(item.getQuantidade());
+
+                    return KitItemResponse.builder()
+                            .id(item.getId())
+                            .produto(item.getProduto())
+                            .quantidade(item.getQuantidade())
+                            .custoProduto(scale(custoProduto))
+                            .custoTotal(scale(custoTotal))
+                            .build();
+                })
+                .toList();
     }
 }

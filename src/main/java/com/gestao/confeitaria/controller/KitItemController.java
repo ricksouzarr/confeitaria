@@ -1,5 +1,6 @@
 package com.gestao.confeitaria.controller;
 
+import com.gestao.confeitaria.dto.KitItemResponse;
 import com.gestao.confeitaria.entity.KitItem;
 import com.gestao.confeitaria.service.KitItemService;
 import org.springframework.beans.factory.annotation.*;
@@ -21,8 +22,8 @@ public class KitItemController {
     }
 
     @GetMapping("/kit/{kitId}")
-    public List<KitItem> listarPorKit(@PathVariable Long kitId) {
-        return service.listarPorKit(kitId);
+    public List<KitItemResponse> listarPorKit(@PathVariable Long kitId) {
+        return service.listarPorKitComCustos(kitId);
     }
 
     @DeleteMapping("/{id}")
