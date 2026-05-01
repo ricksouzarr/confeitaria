@@ -1,14 +1,12 @@
+// src/main/java/com/gestao/confeitaria/service/AuthService.java
 package com.gestao.confeitaria.service;
 
-import com.gestao.confeitaria.dto.LoginRequest;
-import com.gestao.confeitaria.dto.LoginResponse;
-import com.gestao.confeitaria.dto.RegisterRequest;
-import com.gestao.confeitaria.entity.Usuario;
+import com.gestao.confeitaria.dto.*;
+import com.gestao.confeitaria.entity.*;
 import com.gestao.confeitaria.repository.UsuarioRepository;
 import com.gestao.confeitaria.security.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +18,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
 
     public LoginResponse login(LoginRequest request) {
         authenticationManager.authenticate(
@@ -29,9 +28,31 @@ public class AuthService {
         Usuario usuario = usuarioRepository.findByEmail(request.email())
                 .orElseThrow();
 
-        String token = jwtService.gerarToken(usuario);
+        String accessToken = jwtService.gerarToken(usuario);
+        RefreshToken refreshToken = refreshTokenService.criar(usuario);
 
-        return new LoginResponse(token, usuario.getNome(), usuario.getEmail());
+        return new LoginResponse(
+                accessToken,
+                refreshToken.getToken(),
+                usuario.getNome(),
+                usuario.getEmail()
+        );
+    }
+
+    public LoginResponse refresh(String refreshTokenStr) {
+        RefreshToken refreshToken = refreshTokenService.validar(refreshTokenStr);
+        Usuario usuario = refreshToken.getUsuario();
+
+        String novoAccessToken = jwtService.gerarToken(usuario);
+        // rotaciona o refresh token a cada uso
+        RefreshToken novoRefreshToken = refreshTokenService.criar(usuario);
+
+        return new LoginResponse(
+                novoAccessToken,
+                novoRefreshToken.getToken(),
+                usuario.getNome(),
+                usuario.getEmail()
+        );
     }
 
     public LoginResponse register(RegisterRequest request) {
@@ -46,8 +67,14 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
 
-        String token = jwtService.gerarToken(usuario);
+        String accessToken = jwtService.gerarToken(usuario);
+        RefreshToken refreshToken = refreshTokenService.criar(usuario);
 
-        return new LoginResponse(token, usuario.getNome(), usuario.getEmail());
+        return new LoginResponse(
+                accessToken,
+                refreshToken.getToken(),
+                usuario.getNome(),
+                usuario.getEmail()
+        );
     }
 }
