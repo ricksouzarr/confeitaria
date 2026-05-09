@@ -63,7 +63,9 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "http://localhost:5174",
-                "https://confeitaria-front-rub9.onrender.com"
+                "https://confeitaria-front-rub9.onrender.com",
+                "https://confyx.com.br",
+                "https://www.confyx.com.br"
         ));
 
         config.setAllowedMethods(List.of(
