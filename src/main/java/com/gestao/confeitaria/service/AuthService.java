@@ -1,7 +1,9 @@
 // src/main/java/com/gestao/confeitaria/service/AuthService.java
 package com.gestao.confeitaria.service;
 
-import com.gestao.confeitaria.dto.*;
+import com.gestao.confeitaria.dto.auth.LoginRequest;
+import com.gestao.confeitaria.dto.auth.LoginResponse;
+import com.gestao.confeitaria.dto.auth.RegisterRequest;
 import com.gestao.confeitaria.entity.*;
 import com.gestao.confeitaria.repository.UsuarioRepository;
 import com.gestao.confeitaria.security.JwtService;

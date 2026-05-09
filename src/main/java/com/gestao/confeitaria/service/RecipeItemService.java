@@ -1,6 +1,6 @@
 package com.gestao.confeitaria.service;
 
-import com.gestao.confeitaria.dto.FichaTecnicaResult;
+import com.gestao.confeitaria.dto.produto.FichaTecnicaResult;
 import com.gestao.confeitaria.entity.*;
 import com.gestao.confeitaria.repository.RecipeItemRepository;
 import com.gestao.confeitaria.util.BigDecimalUtils;

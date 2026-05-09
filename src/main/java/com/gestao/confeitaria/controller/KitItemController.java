@@ -1,6 +1,6 @@
 package com.gestao.confeitaria.controller;
 
-import com.gestao.confeitaria.dto.KitItemResponse;
+import com.gestao.confeitaria.dto.produto.KitItemResponse;
 import com.gestao.confeitaria.entity.KitItem;
 import com.gestao.confeitaria.service.KitItemService;
 import org.springframework.beans.factory.annotation.*;

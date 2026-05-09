@@ -1,4 +1,4 @@
-package com.gestao.confeitaria.dto;
+package com.gestao.confeitaria.dto.produto;
 
 import com.gestao.confeitaria.entity.Product;
 import lombok.*;

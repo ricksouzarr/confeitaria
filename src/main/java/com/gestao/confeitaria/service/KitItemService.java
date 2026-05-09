@@ -1,6 +1,6 @@
 package com.gestao.confeitaria.service;
 
-import com.gestao.confeitaria.dto.KitItemResponse;
+import com.gestao.confeitaria.dto.produto.KitItemResponse;
 import com.gestao.confeitaria.entity.KitItem;
 import com.gestao.confeitaria.entity.Product;
 import com.gestao.confeitaria.repository.KitItemRepository;

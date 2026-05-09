@@ -1,7 +1,10 @@
 
 package com.gestao.confeitaria.controller;
 
-import com.gestao.confeitaria.dto.*;
+import com.gestao.confeitaria.dto.auth.LoginRequest;
+import com.gestao.confeitaria.dto.auth.LoginResponse;
+import com.gestao.confeitaria.dto.auth.RefreshRequest;
+import com.gestao.confeitaria.dto.auth.RegisterRequest;
 import com.gestao.confeitaria.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
