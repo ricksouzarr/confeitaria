@@ -55,4 +55,12 @@ public class UsuarioController {
         usuarioService.alternarAtivo(id);
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
+
+    @PatchMapping("/{id}/resetar-senha")
+    public ResponseEntity<Void> resetarSenha(
+            @PathVariable Long id,
+            @RequestParam String novaSenha) {
+        usuarioService.resetarSenha(id, novaSenha);
+        return ResponseEntity.noContent().build();
+    }
 }

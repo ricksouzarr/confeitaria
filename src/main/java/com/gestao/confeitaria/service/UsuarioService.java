@@ -83,4 +83,10 @@ public class UsuarioService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Usuário não encontrado: " + id));
     }
+
+    public void resetarSenha(Long id, String novaSenha) {
+        Usuario usuario = buscarEntidade(id);
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+    }
 }

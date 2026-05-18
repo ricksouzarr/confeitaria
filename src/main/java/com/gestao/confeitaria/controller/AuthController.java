@@ -36,13 +36,4 @@ public class AuthController {
     public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshRequest request) {
         return ResponseEntity.ok(authService.refresh(request.refreshToken()));
     }
-
-    @PostMapping("/reset-dev")
-    public ResponseEntity<String> resetDev(@RequestParam String email,
-                                           @RequestParam String senha) {
-        Usuario u = usuarioRepository.findByEmail(email).orElseThrow();
-        u.setSenha(passwordEncoder.encode(senha));
-        usuarioRepository.save(u);
-        return ResponseEntity.ok("Senha resetada com sucesso");
-    }
 }
