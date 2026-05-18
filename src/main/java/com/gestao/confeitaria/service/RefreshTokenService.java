@@ -26,6 +26,7 @@ public class RefreshTokenService {
     public RefreshToken criar(Usuario usuario) {
         // revoga token anterior se existir
         repository.deleteByUsuario(usuario);
+        repository.flush();
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .usuario(usuario)
